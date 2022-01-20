@@ -1,5 +1,5 @@
 {
-    "name": "lywzx/php-epub",
+    "name": "figoware/php-epub",
     "description": "php epub parser",
     "type": "library",
     "keywords": [
@@ -16,7 +16,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "lywzx\\epub\\": "src"
+            "figoware\\epub\\": "src"
         }
     },
     "autoload-dev": {
