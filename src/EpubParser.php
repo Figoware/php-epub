@@ -208,6 +208,9 @@ class EpubParser {
      */
     private function _getTOC() {
         $tocFile = $this->getManifest('ncx');
+        if (!$tocFile)
+            $tocFile = current($this->getManifestByType('application/x-dtbncx+xml'));
+        
         $buf = $this->_getFileContentFromZipArchive($tocFile['href']);
         $tocContents = simplexml_load_string($buf);
 
@@ -370,7 +373,8 @@ class EpubParser {
      * Returns the OPF/Data dir
      * @return string The OPF/data dir
      */
-    private function getOPFDir() {
+     // 16/07/2021 Figo rend visible parce que j'ai pas trouvé comment faire sans...
+    public function getOPFDir() {
         return $this->opfDir;
     }
 
