@@ -6,7 +6,7 @@
  * Time: 17:36
  */
 
-namespace lywzx\epub;
+namespace Figoware\epub;
 
 
 class Util
