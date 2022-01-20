@@ -1,5 +1,5 @@
 <?php
-namespace lywzx\epub;
+namespace Figoware\epub;
 
 class HZip {
     /**
