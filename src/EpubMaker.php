@@ -6,7 +6,7 @@
  * Time: 22:19
  */
 
-namespace lywzx\epub;
+namespace Figoware\epub;
 
 
 class EpubMaker
