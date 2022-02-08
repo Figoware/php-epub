@@ -16,7 +16,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "figoware\\epub\\": "src"
+            "Figoware\\epub\\": "src"
         }
     },
     "autoload-dev": {
