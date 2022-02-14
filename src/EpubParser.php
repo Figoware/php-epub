@@ -208,9 +208,12 @@ class EpubParser {
      */
     private function _getTOC() {
         $tocFile = $this->getManifest('ncx');
-        if (!$tocFile)
-            $tocFile = current($this->getManifestByType('application/x-dtbncx+xml'));
-        
+        if (!$tocFile) $tocFile = $this->getManifest('toc');
+        if (!$tocFile) {
+            $manifest = $this->getManifestByType('application/x-dtbncx+xml');
+            if ($manifest) $tocFile = current($manifest);
+        }
+
         $buf = $this->_getFileContentFromZipArchive($tocFile['href']);
         $tocContents = simplexml_load_string($buf);
 
@@ -237,7 +240,25 @@ class EpubParser {
             return $ret;
         };
 
-        $toc = $callback($tocContents->navMap->navPoint);
+        if (isset($tocContents->navMaps))
+            $toc = $callback($tocContents->navMap->navPoint);
+        else {
+            $namespaces = $tocContents->getDocNamespaces(true);
+            $tocContents->registerXPathNamespace('xhtml', $namespaces['']);
+            /** @var SimpleXMLElement $linkA */
+            foreach ($tocContents->xpath('//xhtml:a') as $linkA) {
+                $src = Util::directoryConcat($this->opfDir, (string) $linkA['href']);
+                $explodeUrl = strpos($src, "#") ? explode("#", $src) : [$src, null];
+                $current = [
+                    'id' => (string) ($linkA['id']?? $linkA['href']),
+                    'name' => (string) $linkA,
+                    'file_name' => $explodeUrl[0],
+                    'src'  => $src,
+                    'page_id' => $explodeUrl[1]
+                ];
+                $toc[] = $current;
+            }
+        }
 
         $this->toc = $toc;
     }
