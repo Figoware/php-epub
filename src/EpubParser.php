@@ -213,6 +213,10 @@ class EpubParser {
             $manifest = $this->getManifestByType('application/x-dtbncx+xml');
             if ($manifest) $tocFile = current($manifest);
         }
+        if (!$tocFile) {
+
+            $tocFile = @$this->manifest['id_TOC_xhtml'];
+        }
 
         $buf = $this->_getFileContentFromZipArchive($tocFile['href']);
         $tocContents = simplexml_load_string($buf);
@@ -240,7 +244,7 @@ class EpubParser {
             return $ret;
         };
 
-        if (isset($tocContents->navMaps))
+        if (isset($tocContents->navMap))
             $toc = $callback($tocContents->navMap->navPoint);
         else {
             $namespaces = $tocContents->getDocNamespaces(true);
